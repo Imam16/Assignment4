@@ -4,9 +4,9 @@ for database - generatedata.com
 
 https://opensourceforu.com/2011/08/connecting-to-mysql-with-python-and-php/
 
-Using the python gui login screen, I am able to integrate it as the login screen for the users and this can be integrated so that after the user logs in, they will be lead to the menu screen which will be developed.
+Using the python Tkinter gui login screen, I am able to integrate it as the login screen for the users and this can be integrated so that after the user logs in, they will be lead to the menu screen which will be developed.
 For the databases, we can generate random database depending on the what we need. Students, Instructors and Admins can all be used.
 
-The 3rd site gives us information on how to connect to an sql database using python files. 
+The 3rd site gives us information on how to connect to an sql database using python files. The site contains methods that can be used in the CURSE project. 
 
-Using all of these, we can create a new design that will serve the purpose of the program. Afterwards, we will integrate and implement the design for release of the program. 
+Using all of these, we can create a new design that will serve the purpose of the program. Most of the intergrating will be for connecting the Tkinter GUI to the python file that contains the database methods. Afterwards, we will integrate and implement the design for release of the program. 
