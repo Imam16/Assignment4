@@ -1,0 +1,6 @@
+https://www.simplifiedpython.net/python-gui-login/
+
+for database - generatedata.com 
+
+Using the python gui login screen, I am able to integrate it as the login screen for the users and this can be integrated so that after the user logs in, they will be lead to the menu screen which will be developed.
+For the databases, we can generate random database depending on the what we need. Students, Instructors and Admins can all be used.
