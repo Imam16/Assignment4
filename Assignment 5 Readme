@@ -1,0 +1,7 @@
+We both agreed to do pretty much every function in our codes, however, for the documentation we divided the tasks.
+Thurein did:
+  Add/remove courses from the system (admin) 
+  Log-in, log-out (all users)
+  Search all courses (all users)
+  Search courses based on parameters (all users)
+  A menu to implement the use-cases
