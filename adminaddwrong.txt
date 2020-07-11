@@ -1,0 +1,13 @@
+30001
+1
+'HUSS'
+nelson mandela
+'History'
+17
+'11:00'
+'MWF'
+'Spring'
+'2020'
+4
+0
+quit
