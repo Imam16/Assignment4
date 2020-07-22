@@ -61,11 +61,13 @@ class student(user):
 
 
     def printschedule(self,username):
-        cursor.execute("""SELECT s.STUDENTEMAIL, s.CRN, c.TITLE FROM STUDENTCOURSE s, COURSE c WHERE s.STUDENTEMAIL = '%s' AND s.CRN = c.CRN""" % username)
+        cursor.execute("""SELECT s.STUDENTEMAIL, s.CRN, c.TITLE, c.Time, c.Days FROM STUDENTCOURSE s, COURSE c WHERE s.STUDENTEMAIL = '%s' AND s.CRN = c.CRN""" % username)
         query_result = cursor.fetchall()
 
         print(query_result)
 
+    def conflict(self):
+        pass
 
 class instructor(user):
     def __init__(self, fname, lname, tempID,title,hireyear,dept,email):
@@ -75,10 +77,23 @@ class instructor(user):
         self.department = dept
         self.email = email
 
-    def printroster(self, name, lastname):
-        pass
-    def printschedule():
-        pass
+    def printroster(self, dept):
+        cursor.execute("""SELECT c.CRN, c.TITLE FROM COURSE c WHERE c.Department = '%s'""" %dept)
+        query_result = cursor.fetchall()
+
+        for i in query_result:
+            print(i)
+            choice = input('Is this the course you want to check your roster? Yes or No')
+            if choice == 'Yes':
+                cursor.execute("""SELECT STUDENTEMAIL FROM STUDENTCOURSE WHERE CRN = '%s'""" %i[0])
+                query_result = cursor.fetchall()
+                print(query_result)
+
+    def printschedule(self, dept):
+        cursor.execute("""SELECT Time, Days, Semester FROM COURSE WHERE Department = '%s'""" %dept)
+        query_result = cursor.fetchall()
+        print(query_result)
+
     def searchcourses():
         pass
 
@@ -159,12 +174,37 @@ class admin(user):
             email = input('Enter an email to remove the entry: ')
             cursor.execute("""DELETE FROM ADMIN WHERE EMAIL = '%s'""" % email)
 
-    def forcein():
-        pass
-    def forceout():
-        pass
-    def searchprintroster():
-        pass
+    def link_unlink(self):
+        choice = input('1. For Student\n2. For Instructor\n')
+        choice = int(choice)
+        link = input('1. For link\n2. For unlink\n')
+        link = int(link)
+
+
+        if choice == 1 and link == 1: #Link Student
+
+            email = input('Enter student email: ')
+            CRN = input('Enter CRN: ')
+            cursor.execute("""INSERT INTO STUDENTCOURSE VALUES('%s', '%s')""" %(email, CRN))
+
+        elif choice == 1 and link == 2: #Unlink Student
+            email = input('Enter student email: ')
+            CRN = input('Enter CRN: ')
+            cursor.execute("""DELETE FROM STUDENTCOURSE WHERE STUDENTEMAIL = '%s' AND CRN = '%s'""" %(email, CRN))
+
+        elif choice == 2 and link == 1:
+            name = input('Enter the name of Instructor to link: ')
+            CRN = input('CRN: ')
+            cursor.execute("""UPDATE COURSE SET INSTRUCTOR = '%s' WHERE CRN = '%s'""" %(name, CRN))
+
+        elif choice == 2 and link == 2:
+            CRN = input('CRN: ')
+            cursor.execute("""UPDATE COURSE SET INSTRUCTOR = ' - ' WHERE CRN = '%s'""" % CRN)
+
+        else:
+            print('Incorrect Choice!')
+
+
 
 ########################### MAIN ################################################
 while True:
@@ -241,6 +281,8 @@ while True:
             email = cursor.fetchall()
             x = instructor(name,surname,ID,title,hireyear,dept,email)
 
+
+
             while True:
                 choice = input('1.SEARCH COURSE BY CRN\n2.SEARCH ALL COURSES\n3.PRINT COURSE ROSTER\n4.PRINT INSTRUCTOR SCHEDULE\n5.LOGOUT\n')
                 choice = int(choice)
@@ -251,9 +293,12 @@ while True:
                 elif choice == 2:
                     x.searchcourseall()
                 elif choice == 3:
-                    x.printroster(name,surname)
+                    dept1 = dept[0]
+                    x.printroster(dept1)
+
                 elif choice == 4:
-                    pass
+                    dept1 = dept[0]
+                    x.printschedule(dept1)
                 elif choice == 5:
                     break
                 else:
@@ -282,7 +327,7 @@ while True:
             email = cursor.fetchall()
             x = admin(name,surname,ID,title,office,email)
             while True:
-                choice = input('1.Add a Course\n2.Remove A Course\n3.Search All Courses\n4.Search by CRN\n5.Add User\n6.Remove User\n7.Assign Course to Instructor\n8.LOGOUT\n')
+                choice = input('1.Add a Course\n2.Remove A Course\n3.Search All Courses\n4.Search by CRN\n5.Add User\n6.Remove User\n7.Link or Unlink\n8.LOGOUT\n')
                 choice = int(choice)
 
                 if choice == 1:
@@ -296,13 +341,16 @@ while True:
                 elif choice == 4:
                     x.searchcoursebyCRN()
                 elif choice == 5:
-                    pass
+                    x.adduser()
+                    database.commit()
                 elif choice == 6:
-                    pass
+                    x.removeuser()
+                    database.commit()
                 elif choice == 7:
-                    pass
+                    x.link_unlink()
                 elif choice == 8:
                     break
+
                 else:
                     print('Choose Well.')
 
